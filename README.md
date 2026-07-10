@@ -14,7 +14,6 @@
   <nav>
     <ul>
       <li><a href="projects.html">Mes projets</a></li>
-      <li><a href="about_me.html">À propos</a></li>
     </ul>
   </nav>
 </body>
