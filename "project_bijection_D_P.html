@@ -1,0 +1,108 @@
+<h1>Bijection entre permutations 312‑évitantes et chemins de Dyck</h1>
+
+<p>
+Ce projet s’inscrit dans un stage de deux mois réalisé en L2 au 
+laboratoire LISN (Université Paris‑Saclay), sous la direction de Viviane Pons.  
+L’objectif général du stage était d’étudier le treillis de Tamari, 
+une structure d’ordre fondamentale en combinatoire, et d’explorer ses liens avec 
+différents objets de type Catalan.
+</p>
+
+<h2>Contexte scientifique</h2>
+
+<p>
+Le treillis de Tamari apparaît dans de nombreux domaines : arbres binaires, 
+chemins de Dyck, triangulations, permutations évitantes, structures algébriques, etc.  
+Dans ce stage, je me suis concentrée sur les permutations 312‑évitantes, 
+qui sont en bijection avec les chemins de Dyck et les arbres binaires.  
+Ces objets sont tous de taille Catalan, et leurs relations sont au cœur de la 
+combinatoire moderne.
+</p>
+
+<h2>Décomposition des permutations 312‑évitantes</h2>
+
+<p>
+Une permutation évite le motif 312 si elle ne contient aucun triplet 
+<i>i &lt; j &lt; k</i> tel que π[k] &lt; π[i] &lt; π[j].  
+Ces permutations possèdent une décomposition naturelle par le minimum :
+</p>
+
+<pre>
+π = L · 1 · R
+</pre>
+
+<p>
+où <code>L</code> et <code>R</code> sont eux‑mêmes 312‑évitantes.  
+Cette décomposition est directement parallèle à celle des arbres binaires.
+</p>
+
+<h2>La bijection que j’ai construite</h2>
+
+<p>
+Le cœur de mon travail a été de définir une bijection explicite 
+entre les permutations 312‑évitantes et les chemins de Dyck.  
+Cette bijection, que j’appelle φ, est définie récursivement par :
+</p>
+
+<pre>
+φ(π) = u · φ(std(L)) · d · φ(std(R))
+</pre>
+
+<p>
+où <code>u</code> est une montée, <code>d</code> une descente, et <code>std</code> la standardisation.  
+Cette construction donne un chemin de Dyck de longueur 2n, parfaitement compatible 
+avec la structure du treillis de Tamari.
+</p>
+
+<h2>Exemple</h2>
+
+<p>
+Pour la permutation π = 3 1 2 4 :
+</p>
+
+<pre>
+Décomposition : π = (3 2) · 1 · (4)
+Arbre binaire : Node( β(3 2), β(4) )
+Chemin de Dyck : u u d u d d
+</pre>
+
+<h2>Compatibilité avec le treillis de Tamari</h2>
+
+<p>
+Une propriété essentielle que j’ai démontrée est :
+</p>
+
+<pre>
+γ( φ(π) ) = β(π)
+</pre>
+
+<p>
+Autrement dit, la bijection transporte l’ordre faible droit sur les permutations 
+312‑évitantes vers l’ordre de Tamari sur les chemins de Dyck.  
+C’est un résultat non trivial, qui montre que la bijection respecte la structure 
+combinatoire profonde des objets.
+</p>
+
+<h2>Ce que ce travail apporte</h2>
+
+<ul>
+  <li>Une bijection explicite et simple à implémenter.</li>
+  <li>Une preuve directe de la compatibilité avec Tamari.</li>
+  <li>Une interprétation élégante via les records de la permutation.</li>
+  <li>Une base pour des expérimentations Sage (tests, contre‑exemples, visualisations).</li>
+</ul>
+
+<h2>Article complet</h2>
+
+<p>  
+Vous pouvez consulter l’article complet ici :
+</p>
+
+<p>
+  <a href="assets/article_bijection.pdf">Télécharger l’article (PDF)</a>
+</p>
+
+
+
+
+
