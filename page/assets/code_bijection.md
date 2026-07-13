@@ -469,4 +469,6 @@ def test_tamari_compatibility(n, pattern, Phi):
 print(test_tamari_compatibility(7, [1, 3, 2], krattenhaler))
 print(test_tamari_compatibility(7, [3, 2, 1], callan))
 print(test_tamari_compatibility(7, [3, 2, 1], bjs))
+print(test_tamari_compatibility(7, [3, 1, 2], bandlow))
+
 ```
