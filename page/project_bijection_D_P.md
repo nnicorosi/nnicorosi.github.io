@@ -47,8 +47,8 @@ Cette construction produit un chemin de Dyck de longueur $$2n$$, parfaitement co
 
 Pour la permutation $$\pi$$ = 3  1  2  4 :
 
-* **Décomposition :** $$\pi = (3  2) \cdot 1 \cdot$$ (4)$$
-* **Arbre binaire associé :** $$Node(\beta(3  2), \beta$(4))$$
+* **Décomposition :** $$\pi = (3  2) \cdot 1 \cdot (4)$$
+* **Arbre binaire associé :** $$Node(\beta(3  2), \beta(4))$$
 * **Chemin de Dyck résultant $$(\varphi(\pi))$$ :** `u u d u d d`
 
 ---
