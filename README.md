@@ -10,6 +10,6 @@ Bienvenue sur mon site ! Je suis étudiante en double licence Mathématiques–I
 
 ## Navigation
 
-* [**Découvrir mes projets**](projects.html)
+* [**Découvrir mes projets**](projects.md)
 
 ---
