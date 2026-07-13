@@ -1,122 +1,81 @@
+# Bijection entre permutations 312‑évitantes et chemins de Dyck
 
-<html>
-<meta charset="UTF-8">
-<h1>Bijection entre permutations 312‑évitantes et chemins de Dyck</h1>
+> **Projet de stage de L2 (Deux mois)** > **Laboratoire :** LISN (Université Paris‑Saclay)  
+> **Encadrement :** Viviane Pons  
+> **Thématique :** Combinatoire algébrique et structures d'ordre
 
-<p>
-Ce projet s’inscrit dans un stage de deux mois réalisé en L2 au 
-laboratoire LISN (Université Paris‑Saclay), sous la direction de Viviane Pons.  
-L’objectif général du stage était d’étudier le treillis de Tamari, 
-une structure d’ordre fondamentale en combinatoire, et d’explorer ses liens avec 
-différents objets de type Catalan.
-</p>
+Ce projet s’inscrit dans un stage de deux mois réalisé en L2 au laboratoire LISN (Université Paris‑Saclay), sous la direction de Viviane Pons. L’objectif général du stage était d’étudier le treillis de Tamari, une structure d’ordre fondamentale en combinatoire, et d’explorer ses liens avec différents objets de type Catalan.
 
-<h2>Contexte scientifique</h2>
+---
 
-<p>
-Le treillis de Tamari apparaît dans de nombreux domaines : arbres binaires, 
-chemins de Dyck, triangulations, permutations évitantes, structures algébriques, etc.  
-Dans ce stage, je me suis concentrée sur les permutations 312‑évitantes, 
-qui sont en bijection avec les chemins de Dyck et les arbres binaires.  
-Ces objets sont tous de taille Catalan, et leurs relations sont au cœur de la 
-combinatoire moderne.
-</p>
+## Contexte scientifique
 
-<h2>Décomposition des permutations 312‑évitantes</h2>
+Le treillis de Tamari apparaît dans de nombreux domaines : arbres binaires, chemins de Dyck, triangulations, permutations évitantes, structures algébriques, etc.
 
-<p>
-Une permutation évite le motif 312 si elle ne contient aucun triplet 
-<i>i &lt; j &lt; k</i> tel que π[k] &lt; π[i] &lt; π[j].  
-Ces permutations possèdent une décomposition naturelle par le minimum :
-</p>
+Dans ce stage, je me suis concentrée sur les permutations 312‑évitantes, qui sont en bijection avec les chemins de Dyck et les arbres binaires. Ces objets sont tous dénombrés par les nombres de Catalan, et leurs relations sont au cœur de la combinatoire moderne.
 
-<pre>
-π = L · 1 · R
-</pre>
+---
 
-<p>
-où <code>L</code> et <code>R</code> sont eux‑mêmes 312‑évitantes.  
-Cette décomposition est directement parallèle à celle des arbres binaires.
-</p>
+## Décomposition des permutations 312‑évitantes
 
-<h2>La bijection que j’ai construite</h2>
+Une permutation $\pi$ évite le motif $312$ si elle ne contient aucun triplet d'indices $i < j < k$ tel que :
+$$\pi[k] < \pi[i] < \pi[j]$$
 
-<p>
-Le cœur de mon travail a été de définir une bijection explicite 
-entre les permutations 312‑évitantes et les chemins de Dyck.  
-Cette bijection, que j’appelle φ, est définie récursivement par :
-</p>
+Ces permutations possèdent une décomposition naturelle par leur minimum :
 
-<pre>
-φ(π) = u · φ(std(L)) · d · φ(std(R))
-</pre>
+$$\pi = L \cdot 1 \cdot R$$
 
-<p>
-où <code>u</code> est une montée, <code>d</code> une descente, et <code>std</code> la standardisation.  
-Cette construction donne un chemin de Dyck de longueur 2n, parfaitement compatible 
-avec la structure du treillis de Tamari.
-</p>
+où $L$ et $R$ sont eux‑mêmes des permutations 312‑évitantes. Cette décomposition est directement parallèle à la structure récursive des arbres binaires.
 
-<h2>Exemple</h2>
+---
 
-<p>
-Pour la permutation π = 3 1 2 4 :
-</p>
+## La bijection construite
 
-<pre>
-Décomposition : π = (3 2) · 1 · (4)
-Arbre binaire : Node( β(3 2), β(4) )
-Chemin de Dyck : u u d u d d
-</pre>
+Le cœur de mon travail a été de définir une bijection explicite entre les permutations 312‑évitantes et les chemins de Dyck. Cette bijection, notée $\varphi$, est définie récursivement par :
 
-<h2>Compatibilité avec le treillis de Tamari</h2>
+$$\varphi(\pi) = u \cdot \varphi(\text{std}(L)) \cdot d \cdot \varphi(\text{std}(R))$$
 
-<p>
-Une propriété essentielle que j’ai démontrée est :
-</p>
+Où :
+* **$u$** représente une montée (up).
+* **$d$** représente une descente (down).
+* **$\text{std}$** désigne l'opérateur de standardisation.
 
-<pre>
-γ( φ(π) ) = β(π)
-</pre>
+Cette construction produit un chemin de Dyck de longueur $2n$, parfaitement compatible avec la structure du treillis de Tamari.
 
-<p>
-Autrement dit, la bijection transporte l’ordre faible droit sur les permutations 
-312‑évitantes vers l’ordre de Tamari sur les chemins de Dyck.  
-C’est un résultat non trivial, qui montre que la bijection respecte la structure 
-combinatoire profonde des objets.
-</p>
+### Exemple concret
 
-<h2>Ce que ce travail apporte</h2>
+Pour la permutation $\pi = 3 \, 1 \, 2 \, 4$ :
 
-<ul>
-  <li>Une bijection explicite et simple à implémenter.</li>
-  <li>Une preuve directe de la compatibilité avec Tamari.</li>
-  <li>Une interprétation élégante via les records de la permutation.</li>
-  <li>Une base pour des expérimentations Sage (tests, contre‑exemples, visualisations).</li>
-</ul>
+* **Décomposition :** $\pi = (3 \, 2) \cdot 1 \cdot (4)$
+* **Arbre binaire associé :** $\text{Node}(\beta(3 \, 2), \beta(4))$
+* **Chemin de Dyck résultant ($\varphi(\pi)$) :** `u u d u d d`
 
-<h2>Article complet</h2>
+---
 
-<p>  
-Vous pouvez consulter l’article complet ici :
-</p>
+## Compatibilité avec le treillis de Tamari
 
-<p>
-  <a href="assets/rewriting_bijection_312_avoing_permutation_dyck_path.pdf">Télécharger l’article (PDF)</a>
-</p>
+Une propriété essentielle que j’ai démontrée au cours de ce stage est la suivante :
 
-<h2>Code complet</h2>
+$$\gamma(\varphi(\pi)) = \beta(\pi)$$
 
-<p>
-Vous pouvez consulter le code complet de la bijection ici :
-</p>
+Autrement dit, la bijection transporte l’ordre faible droit sur les permutations 312‑évitantes vers l’ordre de Tamari sur les chemins de Dyck. C’est un résultat non trivial qui prouve que la bijection respecte la structure combinatoire profonde de ces objets.
 
-<p>
-  <a href="assets/code_bijection.md">Voir le code (Sage)</a>
-</p>
+---
 
+## Apports du travail
 
+* **Algorithmique :** Une bijection explicite, élégante et très simple à implémenter.
+* **Théorique :** Une preuve directe et constructive de la compatibilité avec la structure de Tamari.
+* **Combinatoire :** Une interprétation visuelle via les *records* de la permutation.
+* **Expérimental :** Une base de code solide pour des expérimentations via SageMath (génération de tests, recherche de contre‑exemples et visualisations).
 
+---
 
+## Ressources & Documents
 
+| Ressource | Description | Lien |
+| :--- | :--- | :---: |
+| **Article Complet** | Rapport détaillé incluant les démonstrations rigoureuses. | [Télécharger le PDF](assets/rewriting_bijection_312_avoing_permutation_dyck_path.pdf) |
+| **Code Source** | Implémentation complète de la bijection et des outils de test. | [Voir le code Sage](assets/code_bijection.md) |
 
+---
