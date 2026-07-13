@@ -19,7 +19,7 @@ Dans ce stage, je me suis concentrée sur les permutations 312‑évitantes, qui
 
 ## Décomposition des permutations 312‑évitantes
 
-Une permutation $\pi$ évite le motif $312$ si elle ne contient aucun triplet d'indices $$i < j < k$$ tel que :
+Une permutation $$\pi$$ évite le motif $$312$$ si elle ne contient aucun triplet d'indices $$i < j < k$$ tel que :
 $$\pi[k] < \pi[i] < \pi[j]$$
 
 Ces permutations possèdent une décomposition naturelle par leur minimum :
