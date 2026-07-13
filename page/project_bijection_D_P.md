@@ -1,4 +1,5 @@
 # Bijection entre permutations 312‑évitantes et chemins de Dyck
+<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
 > **Projet de stage de L2 (Deux mois)** > **Laboratoire :** LISN (Université Paris‑Saclay)  
 > **Encadrement :** Viviane Pons  
