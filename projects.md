@@ -6,7 +6,7 @@
 
 <body>
     <ul>
-      <li><a href="page/project_bijection_D_P.html">Projet Bijection </a></li>
+      <li><a href="page/project_bijection_D_P.md">Projet Bijection </a></li>
     </ul>
   </nav>
 </body>
