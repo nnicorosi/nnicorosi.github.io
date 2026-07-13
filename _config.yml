@@ -1,0 +1,6 @@
+theme: jekyll-theme-cayman
+title: "Stage L2 - Combinatoire"
+description: "Bijection entre permutations 312‑évitantes et chemins de Dyck"
+
+kramdown:
+  math_engine: mathjax
