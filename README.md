@@ -1,22 +1,15 @@
 
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Nita Nicorosi – Portfolio</title>
-</head>
+# Nita Nicorosi – Portfolio
 
-<body>
-  <h1>Bienvenue sur mon site</h1>
+> Étudiante en Double Licence Mathématiques – Informatique > Université Paris‑Saclay  
+> Focus : Combinatoire, algorithmique et développement
 
-  <p>Je suis étudiante en double licence Mathématiques–Informatique à Paris‑Saclay.
-     Ce site regroupe mes projets, mon code, et mes travaux en combinatoire.</p>
+Bienvenue sur mon site ! Je suis étudiante en double licence Mathématiques–Informatique à Paris‑Saclay. Ce site regroupe mes projets, mon code, et mes travaux en combinatoire.
 
-  <nav>
-    <ul>
-      <li><a href="projects.html">Mes projets</a></li>
-    </ul>
-  </nav>
-</body>
-</html>
+---
 
+## Navigation
 
+* [**Découvrir mes projets**](projects.html)
+
+---
