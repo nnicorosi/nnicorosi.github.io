@@ -1,6 +1,6 @@
 # Code complet : Bijection 312-évitante → Dyck
 
-> **Code Source SageMath** > **Auteur :** Nita Nicorosi  
+> **Code Source SageMath** > **Auteur :** Nita Nicorosi et plusieurs fonctions on été prise sur le site findstats 
 > **Contexte :** Stage L2 au laboratoire LISN (Université Paris‑Saclay)
 
 ---
@@ -276,199 +276,211 @@ def run_all_tests(nmax: int = 10, verbose: bool = True):
     
 if __name__ == "__main__": 
     run_all_tests(nmax=11, verbose=False)
+```
 
-def avoids_pattern(pi, pattern):
-    return Permutation(pi).avoids(pattern)
+Et voici le code testant la compatibilité de differentes bijections avec Tamari 
+
+```python
+
+
+import itertools
+from collections import deque
+
+def is_dyck(w):
+    h = 0
+    for c in w:
+        h += 1 if c == 'u' else -1
+        if h < 0:
+            return False
+    return h == 0
+
+def all_dyck_words(n):
+    return [w for w in itertools.product('ud', repeat=2*n)
+            if w.count('u') == n and is_dyck(w)]
+
+def area_sequence(w):
+    a, h = [], 0
+    for c in w:
+        if c == 'u':
+            a.append(h); h += 1
+        else:
+            h -= 1
+    return a
+
+def path_height(w):
+    h = best = 0
+    for c in w:
+        h += 1 if c == 'u' else -1
+        best = max(best, h)
+    return best
+
+def avoids_pattern(p, pattern):
+    n, m = len(p), len(pattern)
+    for combo in itertools.combinations(range(n), m):
+        vals = [p[i] for i in combo]
+        rank = {v: i+1 for i, v in enumerate(sorted(vals))}
+        if [rank[v] for v in vals] == list(pattern):
+            return False
+    return True
 
 def Av(n, pattern):
-    return [tuple(p) for p in Permutations(n) if Permutation(p).avoids(pattern)]
+    return [tuple(p) for p in itertools.permutations(range(1, n+1))
+            if avoids_pattern(p, pattern)]
 
-def inversions(pi):
-    inv = set()
-    for i in range(len(pi)):
-        for j in range(i+1, len(pi)):
-            if pi[i] > pi[j]:
-                inv.add((i, j))
-    return inv
+def inversions(p):
+    return {(i, j) for i in range(len(p)) for j in range(i+1, len(p)) if p[i] > p[j]}
 
 def weak_leq(pi, sigma):
     return inversions(pi).issubset(inversions(sigma))
 
-def is_dyck(w):
-    try:
-        print(DyckWord(w))
+def phi_312(pi):
+    M, w = 0, []
+    for x in pi:
+        mu = max(0, x - M)
+        M = max(M, x)
+        w += ['u'] * mu
+        w.append('d')
+    return tuple(w)
+
+def bandlow_killpatrick(w):
+    n = len(w) // 2
+    a = area_sequence(w)
+    p = list(range(1, n+1))
+    for j in range(n):
+        for i in range(a[j]):
+            k = j - i
+            if 1 <= k < n:
+                p[k-1], p[k] = p[k], p[k-1]
+    return tuple(p)
+
+def krattenthaler_132(w):
+    n = len(w) // 2
+    a = area_sequence(w); a.append(0)
+    pi, values = [], list(range(1, n+1))
+    for i in range(n):
+        if a[n-i-1] + 1 > a[n-i]:
+            v = n - i - a[n-i-1]
+        else:
+            v = min(x for x in values if x > n-i-a[n-i-1])
+        pi.append(v); values.remove(v)
+    return tuple(pi)
+
+
+def to_pair_of_tableaux(w):
+    n = len(w) // 2
+    if n == 0:
+        return ([], [])
+    if path_height(w) == n:
+        row = list(range(1, n+1))
+        return ([row], [row])
+    left, right = [[], []], [[], []]
+    for pos in range(n):
+        (left[0] if w[pos] == 'u' else left[1]).append(pos+1)
+        (right[0] if w[-pos-1] == 'd' else right[1]).append(pos+1)
+    return ([r for r in left if r], [r for r in right if r])
+
+def rsk_reverse(P, Q):
+    P = [row[:] for row in P]; Q = [row[:] for row in Q]
+    n = sum(len(row) for row in P)
+    perm = [None] * n
+    for i in range(n, 0, -1):
+        r = next(ridx for ridx, row in enumerate(Q) if row and row[-1] == i)
+        Q[r].pop()
+        val = P[r].pop()
+        for rr in range(r-1, -1, -1):
+            row = P[rr]
+            pos = next(idx for idx in range(len(row)-1, -1, -1) if row[idx] < val)
+            row[pos], val = val, row[pos]
+        perm[i-1] = val
+    return perm
+
+def knuth_321(w):
+    left, right = to_pair_of_tableaux(w)
+    return tuple(rsk_reverse(left, right))
+
+def gamma(w):
+    if len(w) == 0:
+        return ()
+    bal = 0
+    for i in range(len(w)):
+        bal += 1 if w[i] == 'u' else -1
+        if bal == 0:
+            return (gamma(w[1:i]), gamma(w[i+1:]))
+    raise ValueError("not a Dyck word")
+
+def right_rotation_children(T):
+    if T == ():
+        return
+    L, R = T
+    if L != ():
+        LL, LR = L
+        yield (LL, (LR, R))
+    for L2 in right_rotation_children(L):
+        yield (L2, R)
+    for R2 in right_rotation_children(R):
+        yield (L, R2)
+
+def tamari_leq_tree(T1, T2):
+    if T1 == T2:
         return True
-    except:
-        return False
-
-def tamari_cover(w):
-    w = list(w)
-    n = len(w)
-    covers = []
-
-    for i in range(n-1):
-        if w[i] == 'd' and w[i+1] == 'u':
-            new = w[:i] + ['u', 'd'] + w[i+2:]
-            if is_dyck(new):
-                covers.append(tuple(new))
-    return covers
-
-def tamari_leq(a, b):
-    from collections import deque
-    seen = set([tuple(a)])
-    queue = deque([tuple(a)])
-
-    while queue:
-        x = queue.popleft()
-        if x == tuple(b):
-            return True
-        for y in tamari_cover(x):
+    seen = {T2}; q = deque([T2])
+    while q:
+        x = q.popleft()
+        for y in right_rotation_children(x):
+            if y == T1:
+                return True
             if y not in seen:
-                seen.add(y)
-                queue.append(y)
+                seen.add(y); q.append(y)
     return False
 
-def krattenhaler(pi):
-    n = len(pi)
-    w = []
-    
-    current_min = pi[0]
-    minima = [current_min]
-    for x in pi[1:]:
-        current_min = min(current_min, x)
-        minima.append(current_min)
-    
-    height = pi[0]
-    w += ['u'] * height
-    
-    for k in range(1, n):
-        new_height = minima[k]
-        if new_height < height:
-            w += ['u'] * (height - new_height)
-        
-        w.append('d')
-        height = new_height
-    
-    w += ['d'] * height
-    return tuple(w)
+def dyck_tamari_leq(w1, w2):
+    return tamari_leq_tree(gamma(w1), gamma(w2))
 
 
-def callan(pi):
-    n = len(pi)
-    w = []
-    
-    AD = []
-    for i in range(n-1):
-        if pi[i] < pi[i+1]:
-            AD.append('A')
-        else:
-            AD.append('D')
-    
-    for c in AD:
-        if c == 'A':
-            w.append('u')
-        else:
-            w.append('d')
-    w.append('d')
-    return tuple(w)
-
-def bjs(pi):
-    n = len(pi)
-    w = []
-    excess = [pi[i] - (i+1) for i in range(n)]
-    height = 0
-    
-    if excess[0] > 0:
-        w += ['u'] * excess[0]
-        height = excess[0]
-    
-    for i in range(1, n):
-        diff = excess[i] - excess[i-1]
-        if diff > 0:
-            w += ['u'] * diff
-            height += diff
-        elif diff < 0:
-            w += ['d'] * (-diff)
-            height += diff
-            
-    if height > 0:
-        w += ['d'] * height
-    return tuple(w)
-
-def bandlow_factorization(pi):
-    pi = list(pi)
-    n = len(pi)
-    blocks = []
-    transpositions = []
-
-    for target in range(n, 0, -1):
-        pos = pi.index(target)
-        while pos != target - 1:
-            transpositions.append(pos)
-            pi[pos], pi[pos+1] = pi[pos+1], pi[pos]
-            pos += 1
-
-    transpositions = transpositions[::-1]
-    current_block = []
-    last = -1
-    for t in transpositions:
-        if t > last:
-            current_block.append(t)
-            last = t
-        else:
-            blocks.append(current_block)
-            current_block = [t]
-            last = t
-    if current_block:
-        blocks.append(current_block)
-    return blocks
-
-
-def bandlow(pi):
-    n = len(pi)
-    blocks = bandlow_factorization(pi)
-    grid = [[False]*n for _ in range(n)]
-
-    for block in blocks:
-        l = len(block)
-        m = block[-1]
-        row = m
-        for col in range(m, m-l, -1):
-            grid[row][col] = True
-
-    path = []
-    x = y = 0
-    while x < n or y < n:
-        if y < n and not grid[y][x]:
-            path.append('u')
-            y += 1
-        else:
-            path.append('d')
-            x += 1
-    return tuple(path)
-
-def test_tamari_compatibility(n, pattern, Phi):
+def test_tamari_compatibility(n, pattern, Phi, name):
     A = Av(n, pattern)
-    for i in range(len(A)):
-        for j in range(len(A)):
-            pi = A[i]
-            sigma = A[j]
+    for pi in A:
+        for sigma in A:
             if weak_leq(pi, sigma):
-                w_pi = Phi(pi)
-                w_sigma = Phi(sigma)
-                if not tamari_leq(w_pi, w_sigma):
-                    print("Contre-exemple trouvé :")
-                    print("pi =", pi)
-                    print("sigma =", sigma)
-                    print("Phi(pi) =", w_pi)
-                    print("Phi(sigma) =", w_sigma)
+                w_pi, w_sigma = Phi(pi), Phi(sigma)
+                if not is_dyck(w_pi) or not is_dyck(w_sigma):
+                    print(f"  [{name}] ERROR: {Phi.__name__} produced a non-Dyck word "
+                          f"for pi={pi} or sigma={sigma}: {w_pi}, {w_sigma}")
+                    return None
+                if not dyck_tamari_leq(w_pi, w_sigma):
+                    print(f"  [{name}] genuine counterexample at n={n}:")
+                    print(f"    pi    = {pi}   (weak order: pi <= sigma)")
+                    print(f"    sigma = {sigma}")
+                    print(f"    Phi(pi)    = {''.join(w_pi)}")
+                    print(f"    Phi(sigma) = {''.join(w_sigma)}")
+                    print(f"    but Phi(pi) is NOT <=_Tamari Phi(sigma)")
                     return False
-    print("Aucun contre-exemple trouvé jusqu'à n =", n)
+    print(f"  [{name}] no counterexample found up to n = {n}")
     return True
 
-print(test_tamari_compatibility(7, [1, 3, 2], krattenhaler))
-print(test_tamari_compatibility(7, [3, 2, 1], callan))
-print(test_tamari_compatibility(7, [3, 2, 1], bjs))
-print(test_tamari_compatibility(7, [3, 1, 2], bandlow))
+def make_inverse(f):
+    cache = {}
+    def inv(pi):
+        n = len(pi)
+        if n not in cache:
+            table = {}
+            for w in all_dyck_words(n):
+                table[f(w)] = w
+            cache[n] = table
+        return cache[n][tuple(pi)]
+    inv.__name__ = f.__name__ + "_inv"
+    return inv
 
+bandlow_killpatrick_inv = make_inverse(bandlow_killpatrick)
+krattenthaler_132_inv   = make_inverse(krattenthaler_132)
+knuth_321_inv           = make_inverse(knuth_321)
+
+if __name__ == "__main__":
+    NMAX = 8
+    for n in range(2, NMAX+1):
+        print(f"--- n = {n} ---")
+        test_tamari_compatibility(n, [3,1,2], phi_312,             "phi (the paper's own map, 312)")
+        test_tamari_compatibility(n, [3,1,2], bandlow_killpatrick_inv, "Bandlow-Killpatrick (312)")
+        test_tamari_compatibility(n, [1,3,2], krattenthaler_132_inv ,   "Krattenthaler (132)")
+        test_tamari_compatibility(n, [3,2,1], knuth_321_inv,           "Knuth (321)")
 ```
