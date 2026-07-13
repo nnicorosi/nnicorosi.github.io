@@ -19,14 +19,14 @@ Dans ce stage, je me suis concentrée sur les permutations 312‑évitantes, qui
 
 ## Décomposition des permutations 312‑évitantes
 
-Une permutation $\pi$ évite le motif $312$ si elle ne contient aucun triplet d'indices $i < j < k$ tel que :
+Une permutation $\pi$ évite le motif $312$ si elle ne contient aucun triplet d'indices $$i < j < k$$ tel que :
 $$\pi[k] < \pi[i] < \pi[j]$$
 
 Ces permutations possèdent une décomposition naturelle par leur minimum :
 
 $$\pi = L \cdot 1 \cdot R$$
 
-où $L$ et $R$ sont eux‑mêmes des permutations 312‑évitantes. Cette décomposition est directement parallèle à la structure récursive des arbres binaires.
+où $$L$$ et $$R$$ sont eux‑mêmes des permutations 312‑évitantes. Cette décomposition est directement parallèle à la structure récursive des arbres binaires.
 
 ---
 
@@ -41,15 +41,15 @@ Où :
 * d représente une descente (down).
 * std désigne l'opérateur de standardisation.
 
-Cette construction produit un chemin de Dyck de longueur $2n$, parfaitement compatible avec la structure du treillis de Tamari.
+Cette construction produit un chemin de Dyck de longueur $$2n$$, parfaitement compatible avec la structure du treillis de Tamari.
 
 ### Exemple concret
 
-Pour la permutation $\pi$ = 3  1  2  4 :
+Pour la permutation $$\pi$$ = 3  1  2  4 :
 
-* **Décomposition :** $\pi$ = (3  2) $\cdot 1 \cdot$ (4)
-* **Arbre binaire associé :** Node($\beta$(3  2), $\beta$(4))
-* **Chemin de Dyck résultant ($\varphi$($\pi$)) :** `u u d u d d`
+* **Décomposition :** $$\pi = (3  2) \cdot 1 \cdot$$ (4)$$
+* **Arbre binaire associé :** $$Node(\beta(3  2), \beta$(4))$$
+* **Chemin de Dyck résultant $$(\varphi(\pi))$$ :** `u u d u d d`
 
 ---
 
