@@ -1,114 +1,36 @@
+# Code complet : Bijection 312-évitante → Dyck
 
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Code complet – Bijection 312 → Dyck</title>
+> **Code Source SageMath** > **Auteur :** Nita Nicorosi  
+> **Contexte :** Stage L2 au laboratoire LISN (Université Paris‑Saclay)
 
-<style>
-body {
-    font-family: "Inter", "Segoe UI", sans-serif;
-    margin: 40px auto;
-    max-width: 900px;
-    line-height: 1.6;
-    color: #222;
-}
+---
 
-h1, h2, h3 {
-    font-weight: 600;
-    margin-top: 40px;
-}
+## Navigation
+[Retour à l'accueil](../README.md) | [Liste des projets](../projects.html) | [Page explicative du projet](../pages/project_bijection_D_P.html)
 
-pre {
-    background: #1e1e1e;
-    color: #dcdcdc;
-    padding: 18px;
-    border-radius: 10px;
-    overflow-x: auto;
-    font-size: 15px;
-    border: 1px solid #333;
-}
+---
 
-code {
-    font-family: "Fira Code", monospace;
-}
-
-.section {
-    margin-bottom: 50px;
-    padding-bottom: 20px;
-    border-bottom: 2px solid #eee;
-}
-
-.nav {
-    background: #f8f8f8;
-    padding: 12px 20px;
-    border-radius: 8px;
-    margin-bottom: 30px;
-}
-
-.nav a {
-    margin-right: 20px;
-    text-decoration: none;
-    color: #0077cc;
-    font-weight: 500;
-}
-
-.nav a:hover {
-    text-decoration: underline;
-}
-</style>
-</head>
-
-<body>
-
-<div class="nav">
-  <a href="index.html">Accueil</a>
-  <a href="project_polyomino.html">Article</a>
-  <a href="code_bijection.html">Code complet</a>
-</div>
-
-<h1>Code complet – Bijection 312‑évitante → Dyck</h1>
-
-<p>
-Voici l’intégralité du code SageMath développé pendant mon stage au LISN (Paris‑Saclay),
-réorganisé en sections thématiques pour une lecture claire et agréable.
-Aucune ligne n’a été modifiée : seule la présentation a été améliorée.
-</p>
-
-<div class="section">
-<h2>1. Import</h2>
-<pre><code>
+Voici l’intégralité du code SageMath développé pendant mon stage. 
+```python
 from sage.combinat.permutation import Permutations
-</code></pre>
-</div>
-
-<div class="section">
-<h2>2. Permutations 312‑évitantes</h2>
-<pre><code>
 def avoids_312(pi):
     n = len(pi)
     for i in range(n):
-        for j in range(i+1,n):
-            for k in range(j+1,n):
+        for j in range(i+1, n):
+            for k in range(j+1, n):
                 if pi[i] > pi[k] > pi[j]:
                     return False
     return True
 
 def Av_312(n):
     return [list(p) for p in Permutations(n) if avoids_312(p)]
-</code></pre>
-</div>
 
-<div class="section">
-<h2>3. Fonctions combinatoires</h2>
-
-<h3>mu</h3>
-<pre><code>
 def mu_list(pi):
     M = 0
     out = []
     for x in pi:
-        out.append(max(0,x-M))
-        M = max(M,x)
+        out.append(max(0, x - M))
+        M = max(M, x)
     return out
 
 def expected_mu(pi):
@@ -120,10 +42,7 @@ def expected_mu(pi):
         return [1] + right
     left = mu_list(std(L))
     return [left[0] + 1] + left[1:] + [0] + right
-</code></pre>
 
-<h3>Records</h3>
-<pre><code>
 def records(pi):
     M = 0
     out = []
@@ -132,22 +51,14 @@ def records(pi):
             out.append(x)
             M = x
     return out
-</code></pre>
 
-<h3>Standardisation</h3>
-<pre><code>
 def std(p):
     if not p:
         return []
     vals = sorted(p)
-    rank = {v:i+1 for i,v in enumerate(vals)}
+    rank = {v: i+1 for i, v in enumerate(vals)}
     return [rank[x] for x in p]
-</code></pre>
-</div>
 
-<div class="section">
-<h2>4. Bijection φ : permutation → Dyck</h2>
-<pre><code>
 def Phi(pi):
     M = 0
     w = []
@@ -157,11 +68,7 @@ def Phi(pi):
         w.extend(['u'] * mu)
         w.append('d')
     return ''.join(w)
-</code></pre>
-</div>
-<div class="section">
-<h2>5. Arbres : gamma et beta_min</h2>
-<pre><code>
+
 def gamma(w):
     if w == "":
         return ()
@@ -190,12 +97,7 @@ def beta_min(pi):
     L = pi[:k]
     R = pi[k+1:]
     return (beta_min(L), beta_min(R))
-</code></pre>
-</div>
 
-<div class="section">
-<h2>6. Test du théorème principal</h2>
-<pre><code>
 def check_theorem(nmax):
     for n in range(1, nmax+1):
         print("n =", n)
@@ -211,12 +113,7 @@ def check_theorem(nmax):
                 return False
     print("toujours vrai")
     return True
-</code></pre>
-</div>
 
-<div class="section">
-<h2>7. Tests des propriétés intermédiaires</h2>
-<pre><code>
 def check_conjecture_intermediaire(pi):
     m = min(pi)
     i = pi.index(m)
@@ -264,8 +161,8 @@ def check_lemma2(pi):
 
 def check_first_return_block(w):
     bal = 0
-    for i,c in enumerate(w):
-        bal += 1 if c=="u" else -1
+    for i, c in enumerate(w):
+        bal += 1 if c == "u" else -1
         if bal == 0:
             return w[:i+1]
     return None
@@ -290,21 +187,17 @@ def check_corollary(pi):
     k = pi.index(1)
     L = pi[:k]
     p = len(L)
-    return set(L) == set(range(2,p+2))
-</code></pre>
-</div>
-<div class="section">
-<h2>8. Lancement global des tests</h2>
-<pre><code>
-def run_all_tests(nmax : int = 10, verbose: bool = True):
+    return set(L) == set(range(2, p+2))
+
+def run_all_tests(nmax: int = 10, verbose: bool = True):
     print(f"tests des permutations jusqu'a n = {nmax}\n")
     print(f"-"*40)
     
-    print("\n1. Test du corollaire : verifie que L = {2,3,...,|L|+1}" )
+    print("\n1. Test du corollaire : verifie que L = {2,3,...,|L|+1}")
     count = 0
     for n in range(1, nmax+1): 
         for pi in Av_312(n): 
-            count +=1
+            count += 1
             if not check_corollary(pi): 
                 print("CONTRE EXEMPLE")
                 print(f"pi = {pi}")
@@ -315,59 +208,59 @@ def run_all_tests(nmax : int = 10, verbose: bool = True):
     print(f"Aucun contre exemple trouve (testes : {count} permutations)")
         
         
-    print("\n2. Test de la structure de mu : verifie la recursivite de mu" )
-    if check_mu_structure(nmax) : 
+    print("\n2. Test de la structure de mu : verifie la recursivite de mu")
+    if check_mu_structure(nmax): 
         print("structure verifiee")
         
         
-    print("\n3. test de la conjecture intermediaire : verifie la decomposition de phi par rapport au minimum" )
+    print("\n3. test de la conjecture intermediaire : verifie la decomposition de phi par rapport au minimum")
     succes_count = 0
     total_count = 0
     for n in range(1, nmax+1): 
         for pi in Av_312(n): 
-            total_count +=1
+            total_count += 1
             if check_conjecture_intermediaire(pi): 
-                succes_count +=1
-            elif verbose : 
+                succes_count += 1
+            elif verbose: 
                 print(f"echec pour pi = {pi}")
     print(f"reussite : {succes_count}/{total_count} tests passes")
     
     
-    print("\n4. test du lemme 2 : verifie que Phi(pi) = u + Phi(std(L))+d+Phi(std(R))" )
+    print("\n4. test du lemme 2 : verifie que Phi(pi) = u + Phi(std(L))+d+Phi(std(R))")
     succes_count = 0
     total_count = 0
     for n in range(1, nmax+1): 
         for pi in Av_312(n): 
-            total_count +=1
+            total_count += 1
             if check_lemma2(pi): 
-                succes_count +=1
-            elif verbose : 
+                succes_count += 1
+            elif verbose: 
                 print(f"echec pour pi = {pi}")
     print(f"reussite : {succes_count}/{total_count} tests passes")
     
     
-    print("\n5. test de la formule WL : verifie la construction directe de la partie gauche de phi" )
+    print("\n5. test de la formule WL : verifie la construction directe de la partie gauche de phi")
     succes_count = 0
     total_count = 0
     for n in range(1, nmax+1): 
         for pi in Av_312(n): 
-            total_count +=1
+            total_count += 1
             if check_WL_formula(pi): 
-                succes_count +=1
-            elif verbose : 
+                succes_count += 1
+            elif verbose: 
                 print(f"echec pour pi = {pi}")
     print(f"reussite : {succes_count}/{total_count} tests passes")
     
     
-    print("\n6. test de la formule L : verifie que WL=u + Phi(std(L))" )
+    print("\n6. test de la formule L : verifie que WL=u + Phi(std(L))")
     succes_count = 0
     total_count = 0
     for n in range(1, nmax+1): 
         for pi in Av_312(n): 
-            total_count +=1
+            total_count += 1
             if check_L_formula(pi): 
-                succes_count +=1
-            elif verbose : 
+                succes_count += 1
+            elif verbose: 
                 print(f"echec pour pi = {pi}")
     print(f"reussite : {succes_count}/{total_count} tests passes")
 
@@ -381,16 +274,9 @@ def run_all_tests(nmax : int = 10, verbose: bool = True):
     print(f"nombre totale de permutation 312-evitantes testees : {count}")
     
     
-    
-if __name__=="__main__" : 
+if __name__ == "__main__": 
     run_all_tests(nmax=11, verbose=False)
-</code></pre>
-</div>
 
-
-<div class="section">
-<h2>9. Autres bijections (Krattenhaler, Callan, BJS, Bandlow)</h2>
-<pre><code>
 def avoids_pattern(pi, pattern):
     return Permutation(pi).avoids(pattern)
 
@@ -402,7 +288,7 @@ def inversions(pi):
     for i in range(len(pi)):
         for j in range(i+1, len(pi)):
             if pi[i] > pi[j]:
-                inv.add((i,j))
+                inv.add((i, j))
     return inv
 
 def weak_leq(pi, sigma):
@@ -410,7 +296,7 @@ def weak_leq(pi, sigma):
 
 def is_dyck(w):
     try:
-        DyckWord(w)
+        print(DyckWord(w))
         return True
     except:
         return False
@@ -422,7 +308,7 @@ def tamari_cover(w):
 
     for i in range(n-1):
         if w[i] == 'd' and w[i+1] == 'u':
-            new = w[:i] + ['u','d'] + w[i+2:]
+            new = w[:i] + ['u', 'd'] + w[i+2:]
             if is_dyck(new):
                 covers.append(tuple(new))
     return covers
@@ -457,7 +343,6 @@ def krattenhaler(pi):
     
     for k in range(1, n):
         new_height = minima[k]
-        
         if new_height < height:
             w += ['u'] * (height - new_height)
         
@@ -465,7 +350,6 @@ def krattenhaler(pi):
         height = new_height
     
     w += ['d'] * height
-    
     return tuple(w)
 
 
@@ -485,17 +369,13 @@ def callan(pi):
             w.append('u')
         else:
             w.append('d')
-    
     w.append('d')
-    
     return tuple(w)
 
 def bjs(pi):
     n = len(pi)
     w = []
-    
     excess = [pi[i] - (i+1) for i in range(n)]
-    
     height = 0
     
     if excess[0] > 0:
@@ -504,24 +384,21 @@ def bjs(pi):
     
     for i in range(1, n):
         diff = excess[i] - excess[i-1]
-        
         if diff > 0:
             w += ['u'] * diff
             height += diff
         elif diff < 0:
             w += ['d'] * (-diff)
             height += diff
-    
+            
     if height > 0:
         w += ['d'] * height
-    
     return tuple(w)
 
 def bandlow_factorization(pi):
     pi = list(pi)
     n = len(pi)
     blocks = []
-
     transpositions = []
 
     for target in range(n, 0, -1):
@@ -532,7 +409,6 @@ def bandlow_factorization(pi):
             pos += 1
 
     transpositions = transpositions[::-1]
-
     current_block = []
     last = -1
     for t in transpositions:
@@ -545,14 +421,12 @@ def bandlow_factorization(pi):
             last = t
     if current_block:
         blocks.append(current_block)
-
     return blocks
 
 
 def bandlow(pi):
     n = len(pi)
     blocks = bandlow_factorization(pi)
-
     grid = [[False]*n for _ in range(n)]
 
     for block in blocks:
@@ -564,7 +438,6 @@ def bandlow(pi):
 
     path = []
     x = y = 0
-
     while x < n or y < n:
         if y < n and not grid[y][x]:
             path.append('u')
@@ -572,18 +445,8 @@ def bandlow(pi):
         else:
             path.append('d')
             x += 1
-
     return tuple(path)
 
-def Phi(pi):
-    return bandlow(pi)
-</code></pre>
-</div>
-
-
-<div class="section">
-<h2>10. Test de compatibilité Tamari</h2>
-<pre><code>
 def test_tamari_compatibility(n, pattern, Phi):
     A = Av(n, pattern)
     for i in range(len(A)):
@@ -603,11 +466,7 @@ def test_tamari_compatibility(n, pattern, Phi):
     print("Aucun contre-exemple trouvé jusqu'à n =", n)
     return True
 
-print(test_tamari_compatibility(7, [1,3,2], krattenhaler))
-print(test_tamari_compatibility(7, [3,2,1], callan))
-print(test_tamari_compatibility(7, [3,2,1], bjs))
-</code></pre>
-</div>
-
-</body>
-</html>
+print(test_tamari_compatibility(7, [1, 3, 2], krattenhaler))
+print(test_tamari_compatibility(7, [3, 2, 1], callan))
+print(test_tamari_compatibility(7, [3, 2, 1], bjs))
+```
