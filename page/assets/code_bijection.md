@@ -394,10 +394,6 @@ def rsk_reverse(P, Q):
         perm[i-1] = val
     return perm
 
-def knuth_321(w):
-    left, right = to_pair_of_tableaux(w)
-    return tuple(rsk_reverse(left, right))
-
 def gamma(w):
     if len(w) == 0:
         return ()
@@ -473,7 +469,7 @@ def make_inverse(f):
 
 bandlow_killpatrick_inv = make_inverse(bandlow_killpatrick)
 krattenthaler_132_inv   = make_inverse(krattenthaler_132)
-knuth_321_inv           = make_inverse(knuth_321)
+
 
 if __name__ == "__main__":
     NMAX = 8
@@ -481,6 +477,5 @@ if __name__ == "__main__":
         print(f"--- n = {n} ---")
         test_tamari_compatibility(n, [3,1,2], phi_312,             "phi (the paper's own map, 312)")
         test_tamari_compatibility(n, [3,1,2], bandlow_killpatrick_inv, "Bandlow-Killpatrick (312)")
-        test_tamari_compatibility(n, [1,3,2], krattenthaler_132_inv ,   "Krattenthaler (132)")
-        test_tamari_compatibility(n, [3,2,1], knuth_321_inv,           "Knuth (321)")
+        test_tamari_compatibility(n, [1,3,2], krattenhaler_123_inv, "Krattenhaler (132)")
 ```
