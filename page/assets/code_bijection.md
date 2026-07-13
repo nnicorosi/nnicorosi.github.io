@@ -6,7 +6,7 @@
 ---
 
 ## Navigation
-[Retour à l'accueil](../README.md) | [Liste des projets](../projects.html) | [Page explicative du projet](../page/project_bijection_D_P.html)
+[Retour à l'accueil](../../README.md) | [Liste des projets](../projects.html) | [Page explicative du projet](../page/project_bijection_D_P.html)
 
 ---
 
