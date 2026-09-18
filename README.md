@@ -11,5 +11,6 @@ Bienvenue sur mon site ! Je suis étudiante en Magistère informatique à Paris�
 ## Navigation
 
 * [**Découvrir mes projets**](projects.md)
+* [**Mon parcours**](parcours.md)
 
 ---
