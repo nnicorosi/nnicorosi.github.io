@@ -6,6 +6,7 @@
 > **Thématique :** Description du treillis de Tamari sur les objets combinatoires.
 
 Ce projet s’inscrit dans un stage de deux mois réalisé en L2 au laboratoire LISN (Université Paris‑Saclay), sous la direction de Viviane Pons. L’objectif général du stage était d’étudier le treillis de Tamari, une structure d’ordre fondamentale en combinatoire, et d’explorer ses liens avec différents objets de type Catalan.
+L'article est simplement une ébauche. Il n'est ni relu ni finalisé, cependant toutes les preuves y figurent. 
 
 ---
 
